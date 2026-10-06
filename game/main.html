@@ -3,19 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Catch the Falling Objects</title>
+
     <link rel="stylesheet" href="style.css">
-   
 </head>
+
 <body>
-   
-    <a href="startgame.html">
-    
-    <div id="game-container">
-        <div id="catcher"></div>
-        <div id="falling-object"></div>
-        <div id="score">Score: 0</div>
+
+    <div id="game-wrapper">
+
+        <!-- Jogo -->
+        <div id="game-container">
+
+            <div id="catcher"></div>
+
+            <div id="falling-object"></div>
+
+            <div id="score">
+                Score: 0
+            </div>
+
+            <div id="misses">
+                Misses: 0 / 3
+            </div>
+
+            <!-- Tela de Game Over -->
+            <div id="game-over">
+
+                <h1>Game Over!</h1>
+
+                <p id="final-score">
+                    Score: 0
+                </p>
+
+                <button id="restartButton">
+                    🔄 Play Again
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- Controles mobile -->
+        <div id="mobile-controls">
+
+            <button id="leftButton">
+                ⬅️
+            </button>
+
+            <button id="rightButton">
+                ➡️
+            </button>
+
+        </div>
+
     </div>
+
     <script src="script.js"></script>
+
 </body>
 </html>

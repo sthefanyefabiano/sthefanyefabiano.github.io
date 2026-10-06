@@ -1,83 +1,498 @@
 let score = 0;
-const gameContainer = document.getElementById('game-container');
-const catcher = document.getElementById('catcher');
-const fallingObject = document.getElementById('falling-object');
-const scoreDisplay = document.getElementById('score');
 
-let catcherPosition = gameContainer.offsetWidth / 2 - catcher.offsetWidth / 2;
-let fallingObjectPosition = { x: Math.random() * (gameContainer.offsetWidth - fallingObject.offsetWidth), y: 0 };
+let misses = 0;
+
+const maxMisses = 3;
+
 let fallingSpeed = 2;
 
-// Function to move the catcher left and right
-function moveCatcher(event) {
-    if (event.key === 'ArrowLeft' && catcherPosition > 0) {
-        catcherPosition -= 20;
-    } else if (event.key === 'ArrowRight' && catcherPosition < gameContainer.offsetWidth - catcher.offsetWidth) {
-        catcherPosition += 20;
+let gameRunning = true;
+
+let animationId;
+
+
+/* =========================
+   ELEMENTOS DO JOGO
+========================= */
+
+const gameContainer =
+    document.getElementById("game-container");
+
+const catcher =
+    document.getElementById("catcher");
+
+const fallingObject =
+    document.getElementById("falling-object");
+
+const scoreDisplay =
+    document.getElementById("score");
+
+const missesDisplay =
+    document.getElementById("misses");
+
+const gameOverScreen =
+    document.getElementById("game-over");
+
+const finalScore =
+    document.getElementById("final-score");
+
+const restartButton =
+    document.getElementById("restartButton");
+
+const leftButton =
+    document.getElementById("leftButton");
+
+const rightButton =
+    document.getElementById("rightButton");
+
+
+/* =========================
+   POSIÇÃO DO CATCHER
+========================= */
+
+let catcherPosition =
+    gameContainer.offsetWidth / 2 -
+    catcher.offsetWidth / 2;
+
+
+/* =========================
+   OBJETO CAINDO
+========================= */
+
+let fallingObjectPosition = {
+    x: Math.random() *
+        (gameContainer.offsetWidth -
+        fallingObject.offsetWidth),
+
+    y: 0
+};
+
+
+/* =========================
+   MOVIMENTO DO CATCHER
+========================= */
+
+function moveCatcher(direction) {
+
+    const movement = 6;
+
+    if (direction === "left") {
+
+        catcherPosition -= movement;
+
     }
-    catcher.style.left = `${catcherPosition}px`;
-}
 
-// Function to move the falling object
-function moveFallingObject() {
-    fallingObjectPosition.y += fallingSpeed;
-    fallingObject.style.top = `${fallingObjectPosition.y}px`;
-    fallingObject.style.left = `${fallingObjectPosition.x}px`;
+    if (direction === "right") {
 
-    // Check if the object is caught
+        catcherPosition += movement;
+
+    }
+
+    /*
+       Impede o catcher de sair
+       dos limites do jogo.
+    */
+
+    if (catcherPosition < 0) {
+
+        catcherPosition = 0;
+
+    }
+
     if (
-        fallingObjectPosition.y + fallingObject.offsetHeight >= catcher.offsetTop &&
-        fallingObjectPosition.x + fallingObject.offsetWidth >= catcherPosition &&
-        fallingObjectPosition.x <= catcherPosition + catcher.offsetWidth
+        catcherPosition >
+        gameContainer.offsetWidth -
+        catcher.offsetWidth
     ) {
-        score++;
-        scoreDisplay.textContent = `Score: ${score}`;
-        resetFallingObject();
+
+        catcherPosition =
+            gameContainer.offsetWidth -
+            catcher.offsetWidth;
+
     }
 
-    // Reset the object if it falls out of bounds
-    if (fallingObjectPosition.y > gameContainer.offsetHeight) {
-        resetFallingObject();
+    catcher.style.left =
+        `${catcherPosition}px`;
+}
+
+
+/* =========================
+   TECLADO
+========================= */
+
+document.addEventListener("keydown", function(event) {
+
+    if (!gameRunning) {
+        return;
     }
-}
 
-// Function to reset the falling object position
-function resetFallingObject() {
-    fallingObjectPosition = { x: Math.random() * (gameContainer.offsetWidth - fallingObject.offsetWidth), y: 0 };
-    fallingSpeed += 0.1; // Increase speed slightly after each catch
-}
+    if (event.key === "ArrowLeft") {
 
-// Game loop
-function gameLoop() {
-    moveFallingObject();
-    requestAnimationFrame(gameLoop);
-}
+        moveCatcher("left");
 
-// Start the game
-document.addEventListener('keydown', moveCatcher);
-gameLoop();
+    }
 
+    if (event.key === "ArrowRight") {
 
-// Wait for the document to load
-document.addEventListener("DOMContentLoaded", function() {
-    const startButton = document.getElementById("startButton");
-    const startPage = document.getElementById("startPage");
-    const gameContainer = document.getElementById("gameContainer");
+        moveCatcher("right");
 
-    startButton.addEventListener("click", function() {
-        // Hide the start page
-        startPage.style.display = "none";
+    }
 
-        // Show the game container
-        gameContainer.style.display = "block";
-
-        // Call a function to start the game
-        startGame();
-    });
 });
 
-function startGame() {
-    // Initialize your game logic here
-    console.log("Game Started!");
-    // For example: start falling objects, reset scores, etc.
+
+/* =========================
+   CONTROLE MOBILE
+========================= */
+
+let movingLeft = false;
+
+let movingRight = false;
+
+
+/*
+   Começar movimento
+*/
+
+leftButton.addEventListener(
+    "pointerdown",
+    function(event) {
+
+        event.preventDefault();
+
+        movingLeft = true;
+
+    }
+);
+
+
+rightButton.addEventListener(
+    "pointerdown",
+    function(event) {
+
+        event.preventDefault();
+
+        movingRight = true;
+
+    }
+);
+
+
+/*
+   Parar movimento
+*/
+
+leftButton.addEventListener(
+    "pointerup",
+    function() {
+
+        movingLeft = false;
+
+    }
+);
+
+
+rightButton.addEventListener(
+    "pointerup",
+    function() {
+
+        movingRight = false;
+
+    }
+);
+
+
+/*
+   Também para caso o dedo
+   saia do botão.
+*/
+
+leftButton.addEventListener(
+    "pointerleave",
+    function() {
+
+        movingLeft = false;
+
+    }
+);
+
+
+rightButton.addEventListener(
+    "pointerleave",
+    function() {
+
+        movingRight = false;
+
+    }
+);
+
+
+/*
+   Se o usuário tirar o dedo
+   da tela de outra forma.
+*/
+
+leftButton.addEventListener(
+    "pointercancel",
+    function() {
+
+        movingLeft = false;
+
+    }
+);
+
+
+rightButton.addEventListener(
+    "pointercancel",
+    function() {
+
+        movingRight = false;
+
+    }
+);
+
+
+/* =========================
+   OBJETO CAINDO
+========================= */
+
+function moveFallingObject() {
+
+    fallingObjectPosition.y +=
+        fallingSpeed;
+
+    fallingObject.style.top =
+        `${fallingObjectPosition.y}px`;
+
+    fallingObject.style.left =
+        `${fallingObjectPosition.x}px`;
+
+
+    /*
+       Verifica se o objeto
+       foi pego pelo catcher.
+    */
+
+    if (
+
+        fallingObjectPosition.y +
+        fallingObject.offsetHeight >=
+        catcher.offsetTop &&
+
+        fallingObjectPosition.x +
+        fallingObject.offsetWidth >=
+        catcherPosition &&
+
+        fallingObjectPosition.x <=
+        catcherPosition +
+        catcher.offsetWidth
+
+    ) {
+
+        score++;
+
+        scoreDisplay.textContent =
+            `Score: ${score}`;
+
+        /*
+           Aumenta um pouco
+           a velocidade.
+        */
+
+        fallingSpeed += 0.1;
+
+        resetFallingObject();
+
+    }
+
+
+    /*
+       Verifica se o objeto
+       caiu no chão.
+    */
+
+    if (
+        fallingObjectPosition.y >
+        gameContainer.offsetHeight
+    ) {
+
+        misses++;
+
+        missesDisplay.textContent =
+            `Misses: ${misses} / ${maxMisses}`;
+
+        /*
+           Verifica Game Over
+        */
+
+        if (misses >= maxMisses) {
+
+            endGame();
+
+            return;
+
+        }
+
+        resetFallingObject();
+
+    }
+
 }
+
+
+/* =========================
+   RESETAR OBJETO
+========================= */
+
+function resetFallingObject() {
+
+    fallingObjectPosition = {
+
+        x: Math.random() *
+            (
+                gameContainer.offsetWidth -
+                fallingObject.offsetWidth
+            ),
+
+        y: 0
+
+    };
+
+}
+
+
+/* =========================
+   GAME OVER
+========================= */
+
+function endGame() {
+
+    gameRunning = false;
+
+    /*
+       Para o game loop.
+    */
+
+    cancelAnimationFrame(animationId);
+
+    /*
+       Mostra a tela de Game Over.
+    */
+
+    gameOverScreen.style.display =
+        "flex";
+
+    finalScore.textContent =
+        `Final Score: ${score}`;
+
+}
+
+
+/* =========================
+   REINICIAR JOGO
+========================= */
+
+function restartGame() {
+
+    score = 0;
+
+    misses = 0;
+
+    fallingSpeed = 2;
+
+    gameRunning = true;
+
+
+    scoreDisplay.textContent =
+        "Score: 0";
+
+    missesDisplay.textContent =
+        "Misses: 0 / 3";
+
+
+    catcherPosition =
+        gameContainer.offsetWidth / 2 -
+        catcher.offsetWidth / 2;
+
+
+    catcher.style.left =
+        `${catcherPosition}px`;
+
+
+    resetFallingObject();
+
+
+    gameOverScreen.style.display =
+        "none";
+
+
+    /*
+       Começa o jogo novamente.
+    */
+
+    gameLoop();
+
+}
+
+
+/* =========================
+   BOTÃO RESTART
+========================= */
+
+restartButton.addEventListener(
+    "click",
+    restartGame
+);
+
+
+/* =========================
+   GAME LOOP
+========================= */
+
+function gameLoop() {
+
+    if (!gameRunning) {
+        return;
+    }
+
+
+    /*
+       Movimento contínuo
+       dos botões mobile.
+    */
+
+    if (movingLeft) {
+
+        moveCatcher("left");
+
+    }
+
+    if (movingRight) {
+
+        moveCatcher("right");
+
+    }
+
+
+    /*
+       Move o objeto.
+    */
+
+    moveFallingObject();
+
+
+    /*
+       Próximo frame.
+    */
+
+    animationId =
+        requestAnimationFrame(gameLoop);
+
+}
+
+
+/* =========================
+   INICIAR JOGO
+========================= */
+
+gameLoop();

@@ -1,49 +1,239 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     padding: 0;
+
     overflow: hidden;
+
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background-color: #87ceeb; /* Sky blue background */
+
+    min-height: 100vh;
+
+    background-color: #87ceeb;
+
+    font-family: Arial, sans-serif;
 }
+
+#game-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* =========================
+   GAME
+========================= */
 
 #game-container {
     position: relative;
+
     width: 400px;
     height: 600px;
-    background-color: #fff;
-    border: 2px solid #000;
+
+    background-color: white;
+
+    border: 3px solid black;
+
     overflow: hidden;
 }
 
+/* =========================
+   CATCHER
+========================= */
+
 #catcher {
     position: absolute;
+
     bottom: 10px;
     left: 50%;
+
     width: 80px;
     height: 20px;
-    background-color: #000;
+
+    background-color: black;
+
     border-radius: 10px;
-    transform: translateX(-50%);
 }
+
+/* =========================
+   FALLING OBJECT
+========================= */
 
 #falling-object {
     position: absolute;
+
     top: 0;
     left: 50%;
+
     width: 30px;
     height: 30px;
-    background-color: #ff4500; /* Orange-red color */
+
+    background-color: #ff4500;
+
     border-radius: 50%;
-    transform: translateX(-50%);
 }
+
+/* =========================
+   SCORE
+========================= */
 
 #score {
     position: absolute;
+
     top: 10px;
     left: 10px;
-    font-size: 24px;
+
+    font-size: 22px;
     font-weight: bold;
+}
+
+/* =========================
+   MISSES
+========================= */
+
+#misses {
+    position: absolute;
+
+    top: 40px;
+    left: 10px;
+
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* =========================
+   GAME OVER
+========================= */
+
+#game-over {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: none;
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgba(0, 0, 0, 0.8);
+
+    color: white;
+
+    text-align: center;
+
+    z-index: 10;
+}
+
+#game-over h1 {
+    font-size: 42px;
+
+    margin: 0 0 10px;
+}
+
+#final-score {
+    font-size: 24px;
+
+    margin: 10px 0 25px;
+}
+
+#restartButton {
+    padding: 12px 24px;
+
+    font-size: 18px;
+
+    border: none;
+    border-radius: 10px;
+
+    background-color: white;
+
+    cursor: pointer;
+}
+
+#restartButton:hover {
+    transform: scale(1.05);
+}
+
+/* =========================
+   MOBILE CONTROLS
+========================= */
+
+#mobile-controls {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 30px;
+
+    margin-top: 20px;
+}
+
+#mobile-controls button {
+    width: 100px;
+    height: 65px;
+
+    font-size: 32px;
+
+    border: 2px solid black;
+
+    border-radius: 12px;
+
+    background-color: white;
+
+    cursor: pointer;
+
+    /*
+       Evita que o navegador interprete
+       o toque como scroll/zoom.
+    */
+    touch-action: none;
+
+    user-select: none;
+}
+
+#mobile-controls button:active {
+    background-color: #ddd;
+
+    transform: scale(0.95);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    #game-container {
+        width: 90vw;
+        height: 75vh;
+
+        max-width: 400px;
+        max-height: 600px;
+    }
+
+    #mobile-controls button {
+        width: 110px;
+        height: 70px;
+
+        font-size: 34px;
+    }
+}
+
+/* Em telas grandes, esconde os controles mobile */
+
+@media (min-width: 768px) {
+
+    #mobile-controls {
+        display: none;
+    }
+
 }

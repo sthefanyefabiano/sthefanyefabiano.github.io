@@ -1,19 +1,102 @@
- <!DOCTYPE html>
- <html lang="en">
- <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catching Falling Objects</title>
- </head>
- <body>
-     <!--Start Page-->
- <div id="startPage" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; background-color: #f3f3f3;">
-    <h1>Catch the Falling Objects</h1>
-   <a href="index.html"><button id="startButton">Start Game</button></a> 
-</div>
+<!DOCTYPE html>
+<html lang="en">
 
-<div id="gameContainer" style="display: none;">
-  
-</div>
- </body>
- </html>
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Catch the Falling Objects</title>
+
+    <style>
+
+        body {
+            margin: 0;
+
+            height: 100vh;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            background-color: #87ceeb;
+
+            font-family: Arial, sans-serif;
+        }
+
+        #startPage {
+            text-align: center;
+
+            background-color: white;
+
+            padding: 40px;
+
+            border-radius: 20px;
+
+            box-shadow: 0 5px 20px
+                rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        #startButton {
+            padding: 15px 30px;
+
+            font-size: 20px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background-color: black;
+
+            color: white;
+
+            cursor: pointer;
+        }
+
+        #startButton:hover {
+            transform: scale(1.05);
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div id="startPage">
+
+        <h1>
+            🎮 Catch the Falling Objects
+        </h1>
+
+        <p>
+            Catch as many objects as you can!
+        </p>
+
+        <p>
+            You can miss only 3 objects.
+        </p>
+
+        <a href="main.html">
+
+            <button id="startButton">
+                Start Game
+            </button>
+
+        </a>
+
+    </div>
+
+</body>
+
+</html>
