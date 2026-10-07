@@ -10,6 +10,16 @@ let gameRunning = true;
 
 let animationId;
 
+const flowerImages = [
+    "images/arquivo_1_girassol.png",
+    "images/arquivo_2_orquidea.png",
+    "images/arquivo_3_rosa.png",
+    "images/arquivo_4_margarida.png",
+    "images/arquivo_5_tulipa.png"
+];
+
+let flowerIndex = -1;
+
 
 /* =========================
    ELEMENTOS DO JOGO
@@ -346,6 +356,12 @@ function moveFallingObject() {
 
 function resetFallingObject() {
 
+    flowerIndex =
+        (flowerIndex + 1) % flowerImages.length;
+
+    fallingObject.style.backgroundImage =
+        `url("${flowerImages[flowerIndex]}")`;
+
     fallingObjectPosition = {
 
         x: Math.random() *
@@ -401,6 +417,8 @@ function restartGame() {
     fallingSpeed = 2;
 
     gameRunning = true;
+
+    flowerIndex = -1;
 
 
     scoreDisplay.textContent =
@@ -494,5 +512,7 @@ function gameLoop() {
 /* =========================
    INICIAR JOGO
 ========================= */
+
+resetFallingObject();
 
 gameLoop();
